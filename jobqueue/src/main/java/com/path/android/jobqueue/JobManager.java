@@ -16,11 +16,11 @@ import java.util.concurrent.*;
 
 /**
  * a JobManager that supports;
- * -> Persistent / Non Persistent Jobs
- * -> Job Priority
- * -> Running Jobs in Parallel
- * -> Grouping jobs so that they won't run at the same time
- * -> Stats like waiting Job Count
+ * - Persistent / Non Persistent Jobs
+ * - Job Priority
+ * - Running Jobs in Parallel
+ * - Grouping jobs so that they won't run at the same time
+ * - Stats like waiting Job Count
  */
 public class JobManager implements NetworkEventProvider.Listener {
     public static final long NS_PER_MS = 1000000;
@@ -611,7 +611,7 @@ public class JobManager implements NetworkEventProvider.Listener {
 
     /**
      * Deprecated, please use {@link #addJobInBackground(Job)}.
-     * <p></p>Non-blocking convenience method to add a job in background thread.</p>
+     * <p>Non-blocking convenience method to add a job in background thread.</p>
      * @see #addJob(int, long, BaseJob) addJob(priority, delay, job).
      */
     @Deprecated

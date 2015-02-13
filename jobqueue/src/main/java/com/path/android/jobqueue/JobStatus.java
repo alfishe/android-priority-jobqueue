@@ -23,14 +23,13 @@ public enum JobStatus {
     RUNNING,
     /**
      * Job is not known by job queue.
-     * <p>This might be:
+     * <p>This might be:</p>
      * <ul>
      *     <li>Invalid ID</li>
      *     <li>Job has been completed</li>
      *     <li>Job has failed</li>
      *     <li>Job has just been added, about to be delivered into a queue</li>
      * </ul>
-     * </p>
      */
     UNKNOWN
 }

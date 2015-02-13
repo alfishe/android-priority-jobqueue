@@ -104,8 +104,9 @@ public class Configuration {
          * JobManager needs one persistent and one non-persistent {@link JobQueue} to function.
          * By default, it will use {@link SqliteJobQueue} and {@link NonPersistentPriorityQueue}
          * You can provide your own implementation if they don't fit your needs. Make sure it passes all tests in
-         * {@link JobQueueTestBase} to ensure it will work fine.
+         * JobQueueTestBase to ensure it will work fine.
          * @param queueFactory your custom queue factory.
+         * @return Configuration builder instance
          */
         public Builder queueFactory(QueueFactory queueFactory) {
             if(configuration.queueFactory != null) {
@@ -119,7 +120,7 @@ public class Configuration {
         /**
          * convenient configuration to replace job serializer while using {@link SqliteJobQueue} queue for persistence.
          * by default, it uses a {@link SqliteJobQueue.JavaSerializer} which will use default Java serialization.
-         * @param JobSerializer
+         * @param jobSerializer serializer
          * @return
          */
         public Builder jobSerializer(SqliteJobQueue.JobSerializer jobSerializer) {

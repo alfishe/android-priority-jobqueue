@@ -31,6 +31,11 @@ android {
         targetSdkVersion 18
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/LICENSE'
@@ -43,6 +48,15 @@ android {
     }
 
     sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java {
+                srcDir 'src/main/java'
+            }
+            res {
+                srcDir 'src/main/res'
+            }
+        }
         androidTest.setRoot('src/test')
     }
 }
@@ -75,4 +89,39 @@ robolectric {
 
     // configure max heap size of the test JVM
     maxHeapSize = "2048m"
+}
+
+android.libraryVariants.all { variant ->
+    def name = variant.name.capitalize()
+    task "javadoc$name"(type: Javadoc, dependsOn: "assemble$name") {
+        description = "Generates javadoc for build $name"
+        destinationDir = new File(destinationDir, variant.baseName)
+        source = files(variant.javaCompile.source)
+        classpath = files(android.getBootClasspath(), variant.javaCompile.classpath)
+        exclude '**/R.html', '**/R.*.html', '**/index.html'
+    }
+
+    task "javadoc${name}Jar"(type: Jar, dependsOn: "javadoc$name") {
+        classifier = 'javadoc'
+        destinationDir = file('build/outputs/jar/')
+        from tasks."javadoc$name".destinationDir
+    }
+}
+
+task androidJar(type: Copy, dependsOn: assembleRelease) {
+    from('build/intermediates/bundles/release/')
+    into('build/outputs/jar/')
+    include('classes.jar')
+    rename ('classes.jar', 'jobqueue.jar')
+}
+
+task sourcesJar(type: Jar, dependsOn: assembleRelease) {
+    classifier = 'sources'
+    destinationDir = file('build/outputs/jar/')
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourcesJar
+    //archives javadocReleaseJar
 }
