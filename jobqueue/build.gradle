@@ -1,19 +1,21 @@
 buildscript {
     repositories {
+        jcenter()
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
-        classpath "com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT"
+        classpath 'com.android.tools.build:gradle:1.0.1'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
     }
 }
 
 apply plugin: 'android-library'
-apply plugin: 'android-test'
+apply plugin: 'robolectric'
 
 repositories {
+    jcenter()
     mavenCentral()
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots/'
@@ -22,24 +24,55 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion "19.1"
+
     defaultConfig {
         minSdkVersion 7
         targetSdkVersion 18
     }
 
-    dependencies {
-        androidTestCompile 'org.easytesting:fest-util:1.1.2'
-        androidTestCompile 'org.hamcrest:hamcrest-core:1.3'
-        androidTestCompile 'junit:junit:4.11'
-        androidTestCompile 'org.robolectric:robolectric:2.2'
-        testCompile 'org.easytesting:fest-util:1.1.2'
-        testCompile 'org.hamcrest:hamcrest-core:1.3'
-        testCompile 'junit:junit:4.11'
-        testCompile 'org.robolectric:robolectric:2.2'
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'LICENSE.txt'
+        exclude 'LICENSE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'NOTICE.txt'
+        exclude 'NOTICE'
     }
 
     sourceSets {
         androidTest.setRoot('src/test')
     }
+}
+
+dependencies {
+    //compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    androidTestCompile 'org.easytesting:fest-reflect:1.4.1'
+    androidTestCompile 'org.easytesting:fest-util:1.2.5'
+    androidTestCompile 'org.hamcrest:hamcrest-core:1.3'
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile('org.robolectric:robolectric:2.4') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+
+    testCompile 'org.easytesting:fest-reflect:1.4.1'
+    testCompile 'org.easytesting:fest-util:1.2.5'
+    testCompile 'org.hamcrest:hamcrest-core:1.3'
+    testCompile 'junit:junit:4.12'
+    testCompile('org.robolectric:robolectric:2.4') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+}
+
+robolectric {
+    // configure the set of classes for JUnit tests
+    include '**/*Test.class'
+
+    // configure max heap size of the test JVM
+    maxHeapSize = "2048m"
 }
