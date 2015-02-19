@@ -305,6 +305,7 @@ public class JobManager implements NetworkEventProvider.Listener {
         synchronized (newJobListeners) {
             newJobListeners.notifyAll();
         }
+
         jobConsumerExecutor.considerAddingConsumer();
     }
 
@@ -320,7 +321,9 @@ public class JobManager implements NetworkEventProvider.Listener {
     }
 
     private boolean hasNetwork() {
-        return networkUtil == null || networkUtil.isConnected(appContext);
+        boolean result = networkUtil == null || networkUtil.isConnected(appContext);
+
+        return result;
     }
 
     private JobHolder getNextJob() {
@@ -391,31 +394,44 @@ public class JobManager implements NetworkEventProvider.Listener {
      * @return
      */
     public JobStatus getJobStatus(long id, boolean isPersistent) {
-        if(jobConsumerExecutor.isRunning(id, isPersistent)) {
-            return JobStatus.RUNNING;
+        JobStatus result;
+
+        if (jobConsumerExecutor.isRunning(id, isPersistent)) {
+            result = JobStatus.RUNNING;
         }
-        JobHolder holder;
-        if(isPersistent) {
-            synchronized (persistentJobQueue) {
-                holder = persistentJobQueue.findJobById(id);
+        else {
+            JobHolder holder;
+
+            if (isPersistent) {
+                synchronized (persistentJobQueue) {
+                    holder = persistentJobQueue.findJobById(id);
+                }
             }
-        } else {
-            synchronized (nonPersistentJobQueue) {
-                holder = nonPersistentJobQueue.findJobById(id);
+            else {
+                synchronized (nonPersistentJobQueue) {
+                    holder = nonPersistentJobQueue.findJobById(id);
+                }
             }
-        }
-        if(holder == null) {
-            return JobStatus.UNKNOWN;
-        }
-        boolean network = hasNetwork();
-        if(holder.requiresNetwork() && !network) {
-            return JobStatus.WAITING_NOT_READY;
-        }
-        if(holder.getDelayUntilNs() > System.nanoTime()) {
-            return JobStatus.WAITING_NOT_READY;
+
+            if (holder == null) {
+                result = JobStatus.UNKNOWN;
+            }
+            else {
+                boolean network = hasNetwork();
+
+                if (holder.requiresNetwork() && !network) {
+                    result = JobStatus.WAITING_NOT_READY;
+                }
+                else if (holder.getDelayUntilNs() > System.nanoTime()) {
+                    result = JobStatus.WAITING_NOT_READY;
+                }
+                else {
+                    result = JobStatus.WAITING_READY;
+                }
+            }
         }
 
-        return JobStatus.WAITING_READY;
+        return result;
     }
 
     private void removeJob(JobHolder jobHolder) {
@@ -438,10 +454,12 @@ public class JobManager implements NetworkEventProvider.Listener {
             nonPersistentJobQueue.clear();
             nonPersistentOnAddedLocks.clear();
         }
+
         synchronized (persistentJobQueue) {
             persistentJobQueue.clear();
             persistentOnAddedLocks.clear();
         }
+
         runningJobGroups.clear();
     }
 

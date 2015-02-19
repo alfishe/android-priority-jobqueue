@@ -323,7 +323,8 @@ public class SqliteJobQueue implements JobQueue {
         try {
             return jobSerializer.serialize(object);
         } catch (Throwable t) {
-            JqLog.e(t, "error while serializing object %s", object.getClass().getSimpleName());
+            String errorMessage = String.format("error while serializing object %s", object.getClass().getSimpleName());
+            JqLog.e(t, errorMessage);
         }
         return null;
     }
