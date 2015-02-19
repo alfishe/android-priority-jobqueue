@@ -1,6 +1,6 @@
-package com.path.android.jobqueue.examples.twitter.controllers;
+package co.alfabits.android.jobqueue.examples.twitter.controllers;
 
-import com.path.android.jobqueue.examples.twitter.Config;
+import co.alfabits.android.jobqueue.examples.twitter.Config;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;

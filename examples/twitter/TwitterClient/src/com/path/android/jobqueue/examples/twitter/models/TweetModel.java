@@ -1,7 +1,7 @@
-package com.path.android.jobqueue.examples.twitter.models;
+package co.alfabits.android.jobqueue.examples.twitter.models;
 
-import com.path.android.jobqueue.examples.twitter.dao.TweetDao;
-import com.path.android.jobqueue.examples.twitter.entities.Tweet;
+import co.alfabits.android.jobqueue.examples.twitter.dao.TweetDao;
+import co.alfabits.android.jobqueue.examples.twitter.entities.Tweet;
 import de.greenrobot.dao.LazyList;
 
 import java.util.Collection;

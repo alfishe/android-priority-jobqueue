@@ -1,11 +1,11 @@
-package com.path.android.jobqueue.examples.twitter.models;
+package co.alfabits.android.jobqueue.examples.twitter.models;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import com.path.android.jobqueue.examples.twitter.TwitterApplication;
-import com.path.android.jobqueue.examples.twitter.dao.DaoMaster;
-import com.path.android.jobqueue.examples.twitter.dao.DaoSession;
-import com.path.android.jobqueue.persistentQueue.sqlite.DbOpenHelper;
+import co.alfabits.android.jobqueue.examples.twitter.TwitterApplication;
+import co.alfabits.android.jobqueue.examples.twitter.dao.DaoMaster;
+import co.alfabits.android.jobqueue.examples.twitter.dao.DaoSession;
+import co.alfabits.android.jobqueue.persistentQueue.sqlite.DbOpenHelper;
 import de.greenrobot.dao.DbUtils;
 import de.greenrobot.dao.Query;
 

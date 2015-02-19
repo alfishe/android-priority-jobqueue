@@ -1,4 +1,4 @@
-package com.path.android.jobqueue.examples.twitter.activities;
+package co.alfabits.android.jobqueue.examples.twitter.activities;
 
 import android.app.Activity;
 

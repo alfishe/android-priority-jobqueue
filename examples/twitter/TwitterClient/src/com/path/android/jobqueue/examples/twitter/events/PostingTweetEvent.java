@@ -1,6 +1,6 @@
-package com.path.android.jobqueue.examples.twitter.events;
+package co.alfabits.android.jobqueue.examples.twitter.events;
 
-import com.path.android.jobqueue.examples.twitter.entities.Tweet;
+import co.alfabits.android.jobqueue.examples.twitter.entities.Tweet;
 
 public class PostingTweetEvent {
     private Tweet tweeet;

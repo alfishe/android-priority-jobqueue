@@ -1,14 +1,14 @@
-package com.path.android.jobqueue.examples.twitter.jobs;
+package co.alfabits.android.jobqueue.examples.twitter.jobs;
 
-import com.path.android.jobqueue.BaseJob;
-import com.path.android.jobqueue.Job;
-import com.path.android.jobqueue.Params;
-import com.path.android.jobqueue.examples.twitter.controllers.TwitterController;
-import com.path.android.jobqueue.examples.twitter.entities.Tweet;
-import com.path.android.jobqueue.examples.twitter.events.DeletedTweetEvent;
-import com.path.android.jobqueue.examples.twitter.events.PostedTweetEvent;
-import com.path.android.jobqueue.examples.twitter.events.PostingTweetEvent;
-import com.path.android.jobqueue.examples.twitter.models.TweetModel;
+import co.alfabits.android.jobqueue.BaseJob;
+import co.alfabits.android.jobqueue.Job;
+import co.alfabits.android.jobqueue.Params;
+import co.alfabits.android.jobqueue.examples.twitter.controllers.TwitterController;
+import co.alfabits.android.jobqueue.examples.twitter.entities.Tweet;
+import co.alfabits.android.jobqueue.examples.twitter.events.DeletedTweetEvent;
+import co.alfabits.android.jobqueue.examples.twitter.events.PostedTweetEvent;
+import co.alfabits.android.jobqueue.examples.twitter.events.PostingTweetEvent;
+import co.alfabits.android.jobqueue.examples.twitter.models.TweetModel;
 import de.greenrobot.event.EventBus;
 import twitter4j.Status;
 import twitter4j.TwitterException;

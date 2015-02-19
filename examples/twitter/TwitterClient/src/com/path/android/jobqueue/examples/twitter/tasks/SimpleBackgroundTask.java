@@ -1,4 +1,4 @@
-package com.path.android.jobqueue.examples.twitter.tasks;
+package co.alfabits.android.jobqueue.examples.twitter.tasks;
 
 import android.app.Activity;
 import android.os.AsyncTask;

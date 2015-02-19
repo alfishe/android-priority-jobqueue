@@ -1,4 +1,4 @@
-package com.path.android.jobqueue.examples.twitter.events;
+package co.alfabits.android.jobqueue.examples.twitter.events;
 
 public class DeletedTweetEvent {
     private long id;

@@ -1,10 +1,10 @@
-package com.path.android.jobqueue.examples.twitter;
+package co.alfabits.android.jobqueue.examples.twitter;
 
 import android.app.Application;
 import android.util.Log;
-import com.path.android.jobqueue.JobManager;
-import com.path.android.jobqueue.config.Configuration;
-import com.path.android.jobqueue.log.CustomLogger;
+import co.alfabits.android.jobqueue.JobManager;
+import co.alfabits.android.jobqueue.config.Configuration;
+import co.alfabits.android.jobqueue.log.CustomLogger;
 
 public class TwitterApplication extends Application {
     private static TwitterApplication instance;

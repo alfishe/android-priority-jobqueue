@@ -1,4 +1,4 @@
-package com.path.android.jobqueue.examples.twitter.entities;
+package co.alfabits.android.jobqueue.examples.twitter.entities;
 
 
 

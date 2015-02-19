@@ -1,4 +1,4 @@
-package com.path.android.jobqueue.examples.twitter.jobs;
+package co.alfabits.android.jobqueue.examples.twitter.jobs;
 
 public class Priority {
     public static int LOW = 0;

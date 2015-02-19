@@ -1,4 +1,4 @@
-package com.path.android.jobqueue.examples.twitter;
+package co.alfabits.android.jobqueue.examples.twitter;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,18 +9,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.path.android.jobqueue.JobManager;
-import com.path.android.jobqueue.examples.twitter.activities.BaseActivity;
-import com.path.android.jobqueue.examples.twitter.adapters.LazyListAdapter;
-import com.path.android.jobqueue.examples.twitter.entities.Tweet;
-import com.path.android.jobqueue.examples.twitter.events.DeletedTweetEvent;
-import com.path.android.jobqueue.examples.twitter.events.FetchedNewTweetsEvent;
-import com.path.android.jobqueue.examples.twitter.events.PostedTweetEvent;
-import com.path.android.jobqueue.examples.twitter.events.PostingTweetEvent;
-import com.path.android.jobqueue.examples.twitter.jobs.FetchTweetsJob;
-import com.path.android.jobqueue.examples.twitter.jobs.PostTweetJob;
-import com.path.android.jobqueue.examples.twitter.models.TweetModel;
-import com.path.android.jobqueue.examples.twitter.tasks.SimpleBackgroundTask;
+import co.alfabits.android.jobqueue.JobManager;
+import co.alfabits.android.jobqueue.examples.twitter.activities.BaseActivity;
+import co.alfabits.android.jobqueue.examples.twitter.adapters.LazyListAdapter;
+import co.alfabits.android.jobqueue.examples.twitter.entities.Tweet;
+import co.alfabits.android.jobqueue.examples.twitter.events.DeletedTweetEvent;
+import co.alfabits.android.jobqueue.examples.twitter.events.FetchedNewTweetsEvent;
+import co.alfabits.android.jobqueue.examples.twitter.events.PostedTweetEvent;
+import co.alfabits.android.jobqueue.examples.twitter.events.PostingTweetEvent;
+import co.alfabits.android.jobqueue.examples.twitter.jobs.FetchTweetsJob;
+import co.alfabits.android.jobqueue.examples.twitter.jobs.PostTweetJob;
+import co.alfabits.android.jobqueue.examples.twitter.models.TweetModel;
+import co.alfabits.android.jobqueue.examples.twitter.tasks.SimpleBackgroundTask;
 import de.greenrobot.dao.LazyList;
 import de.greenrobot.event.EventBus;
 

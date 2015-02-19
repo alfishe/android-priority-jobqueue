@@ -1,4 +1,4 @@
-package com.path.android.jobqueue.examples.twitter.adapters;
+package co.alfabits.android.jobqueue.examples.twitter.adapters;
 
 import android.widget.BaseAdapter;
 import de.greenrobot.dao.LazyList;

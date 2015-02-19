@@ -1,4 +1,4 @@
-package com.path.android.jobqueue.examples.twitter;
+package co.alfabits.android.jobqueue.examples.twitter;
 
 public class Config {
     public static final String CONSUMER_KEY = "APEGHy66BMYzvgEktDfc1Q";
