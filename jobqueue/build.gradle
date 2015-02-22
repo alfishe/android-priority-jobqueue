@@ -102,12 +102,29 @@ def getVersionCode(manifestFile){
     return manifestParser.getVersionCode(manifestFile);
 }
 
+// Retrieve version information from Manifest
+def manifestFile = file(android.sourceSets.main.manifest.srcFile);
+def version = getVersionName(manifestFile)
+def archivesVersionedName = "${archivesBaseName}-${version}"
+
+// Produce versioned .aar output
+android.libraryVariants.all { variant ->
+    variant.outputs.each { output ->
+        def outputFile = output.outputFile
+        if (outputFile != null && outputFile.name.endsWith('.aar')) {
+            def fileName = "${archivesVersionedName}.aar"
+            output.outputFile = new File(outputFile.parent, fileName)
+        }
+    }
+}
+
 android.libraryVariants.all { variant ->
     def name = variant.name.capitalize()
     task "javadoc$name"(type: Javadoc, dependsOn: "assemble$name") {
         description = "Generates javadoc for build $name"
         destinationDir = new File(destinationDir, variant.baseName)
         source = files(variant.javaCompile.source)
+        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
         classpath = files(android.getBootClasspath(), variant.javaCompile.classpath)
         exclude '**/R.html', '**/R.*.html', '**/index.html'
     }
@@ -115,23 +132,22 @@ android.libraryVariants.all { variant ->
     task "javadoc${name}Jar"(type: Jar, dependsOn: "javadoc$name") {
         classifier = 'javadoc'
         destinationDir = file('build/outputs/jar/')
+        archiveName = "${archivesVersionedName}-javadoc.jar"
         from tasks."javadoc$name".destinationDir
     }
 }
 
 task androidJar(type: Copy, dependsOn: assembleRelease) {
-    def manifestFile = file(android.sourceSets.main.manifest.srcFile);
-    def version = getVersionName(manifestFile)
-
     from('build/intermediates/bundles/release/')
     into('build/outputs/jar/')
     include('classes.jar')
-    rename ('classes.jar', 'jobqueue-' + version + '.jar')
+    rename ('classes.jar', "${archivesVersionedName}.jar")
 }
 
 task sourcesJar(type: Jar, dependsOn: assembleRelease) {
     classifier = 'sources'
     destinationDir = file('build/outputs/jar/')
+    archiveName = "${archivesVersionedName}-sources.jar"
     from android.sourceSets.main.java.srcDirs
 }
 
