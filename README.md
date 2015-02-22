@@ -135,9 +135,9 @@ Maven:
 
 ``` xml
 <dependency>
-    <groupId>com.path</groupId>
+    <groupId>co.alfabits</groupId>
     <artifactId>android-priority-jobqueue</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 
@@ -150,6 +150,8 @@ We highly recommend checking how you can configure job manager and individual jo
 * [Review sample configuration][7]
 
 ### Version History
+  - 1.1.3 (Feb 21, 2015)
+   - Forked from Path main reporsitory and now will develop on it's own. Path does not invest efforts in fixes and features.
   - 1.1.2 (Feb 18, 2014)
    - Report exceptions to logger if addInBackground fails. (#31)
   - 1.1.1 (Feb 8, 2014)
@@ -181,17 +183,7 @@ We highly recommend checking how you can configure job manager and individual jo
 - - [Path's fork of greenDAO](https://github.com/path/greenDAO) . ([original repo](https://github.com/greenrobot/greenDAO))
 
 ### Building
-We are in the process of moving build system from ant to gradle. Right now, you can build with gradle but if you want to run tests, you'll need ant.
-
-* Clone the repo
-* `> cd jobqueue`
-* `> ant clean build-jar`
-*
-This will create a jar file under _release_ folder.
-
-#### Running Tests
-* > `cd jobqueue`
-* > `ant clean test`
+Just use gradle or Android Studio 1.1 to build and run tests
 
 
 ## License
