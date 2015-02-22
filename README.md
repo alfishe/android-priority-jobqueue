@@ -151,7 +151,8 @@ We highly recommend checking how you can configure job manager and individual jo
 
 ### Version History
   - 1.1.3 (Feb 21, 2015)
-   - Forked from Path main reporsitory and now will develop on it's own. Path does not invest efforts in fixes and features.
+   - Forked from Path main repository and now will develop on it's own. Path does not invest efforts in fixes and features.
+   - Fixed persistence SQLite DB access. DB is not locked from starting thread anymore. Short-term writable locks only when it's neccessary and from the thread performing the call.
   - 1.1.2 (Feb 18, 2014)
    - Report exceptions to logger if addInBackground fails. (#31)
   - 1.1.1 (Feb 8, 2014)
