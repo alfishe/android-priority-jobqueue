@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 18
+        targetSdkVersion 19
     }
 
     compileOptions {
@@ -90,6 +90,18 @@ dependencies {
 //    maxHeapSize = "2048m"
 //}
 
+import com.android.builder.core.DefaultManifestParser
+
+def getVersionName(manifestFile) {
+    def manifestParser = new DefaultManifestParser();
+    return manifestParser.getVersionName(manifestFile);
+}
+
+def getVersionCode(manifestFile){
+    def manifestParser = new DefaultManifestParser();
+    return manifestParser.getVersionCode(manifestFile);
+}
+
 android.libraryVariants.all { variant ->
     def name = variant.name.capitalize()
     task "javadoc$name"(type: Javadoc, dependsOn: "assemble$name") {
@@ -108,10 +120,13 @@ android.libraryVariants.all { variant ->
 }
 
 task androidJar(type: Copy, dependsOn: assembleRelease) {
+    def manifestFile = file(android.sourceSets.main.manifest.srcFile);
+    def version = getVersionName(manifestFile)
+
     from('build/intermediates/bundles/release/')
     into('build/outputs/jar/')
     include('classes.jar')
-    rename ('classes.jar', 'jobqueue.jar')
+    rename ('classes.jar', 'jobqueue-' + version + '.jar')
 }
 
 task sourcesJar(type: Jar, dependsOn: assembleRelease) {
