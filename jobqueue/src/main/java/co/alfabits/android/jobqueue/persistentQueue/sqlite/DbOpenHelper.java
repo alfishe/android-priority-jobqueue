@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Helper class for {@link SqliteJobQueue} to handle database connection
  */
 public class DbOpenHelper extends SQLiteOpenHelper {
+    //region Constants
+
     private static final int DB_VERSION = 3;
     /*package*/ static final String JOB_HOLDER_TABLE_NAME = "job_holder";
     /*package*/ static final SqlHelper.Property ID_COLUMN = new SqlHelper.Property("_id", "integer", 0);
@@ -22,8 +24,50 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     /*package*/ static final int COLUMN_COUNT = 9;
 
+    //endregion
+
+    //region Fields
+
+    private Context context;
+    private int activeWritableDatabaseCount = 0;
+    private SQLiteDatabase writableDatabase;
+
+    //endregion
+
+    //region Constructors
+
     public DbOpenHelper(Context context, String name) {
         super(context, name, null, DB_VERSION);
+
+        this.context = context;
+    }
+
+    //endregion
+
+    //region Methods
+
+    @Override
+    public synchronized SQLiteDatabase getWritableDatabase() {
+        if (activeWritableDatabaseCount == 0 || writableDatabase == null) {
+            writableDatabase = super.getWritableDatabase();
+        }
+
+        activeWritableDatabaseCount++;
+
+        return writableDatabase;
+    }
+
+    @Override
+    public synchronized void close() {
+        activeWritableDatabaseCount--;
+
+        if (activeWritableDatabaseCount == 0) {
+            if (writableDatabase != null && writableDatabase.isOpen()) {
+                writableDatabase.close();
+            }
+
+            writableDatabase = null;
+        }
     }
 
     @Override
@@ -47,4 +91,6 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SqlHelper.drop(JOB_HOLDER_TABLE_NAME));
         onCreate(sqLiteDatabase);
     }
+
+    //endregion
 }
