@@ -10,6 +10,8 @@ import co.alfabits.android.jobqueue.log.JqLog;
  */
 public class SqlHelper {
 
+    //region Fields
+
     /**package**/ String FIND_BY_ID_QUERY;
 
     private SQLiteStatement insertStatement;
@@ -20,21 +22,29 @@ public class SqlHelper {
     private SQLiteStatement nextJobDelayedUntilWithNetworkStatement;
     private SQLiteStatement nextJobDelayedUntilWithoutNetworkStatement;
 
+    private final DbOpenHelper dbOpenHelper;
+    private final String tableName;
+    private final String primaryKeyColumnName;
+    private final int columnCount;
+    private final long sessionId;
 
-    final SQLiteDatabase db;
-    final String tableName;
-    final String primaryKeyColumnName;
-    final int columnCount;
-    final long sessionId;
+    //endregion
 
-    public SqlHelper(SQLiteDatabase db, String tableName, String primaryKeyColumnName, int columnCount, long sessionId) {
-        this.db = db;
+    //region Constructors
+
+    public SqlHelper(DbOpenHelper dbOpenHelper, String tableName, String primaryKeyColumnName, int columnCount, long sessionId) {
+        this.dbOpenHelper = dbOpenHelper;
         this.tableName = tableName;
         this.columnCount = columnCount;
         this.primaryKeyColumnName = primaryKeyColumnName;
         this.sessionId = sessionId;
+
         FIND_BY_ID_QUERY = "SELECT * FROM " + tableName + " WHERE " + DbOpenHelper.ID_COLUMN.columnName + " = ?";
     }
+
+    //endregion
+
+    //region Methods
 
     public static String create(String tableName, Property primaryKey, Property... properties) {
         StringBuilder builder = new StringBuilder("CREATE TABLE ");
@@ -54,124 +64,146 @@ public class SqlHelper {
         return "DROP TABLE IF EXISTS " + tableName;
     }
 
-    public SQLiteStatement getInsertStatement() {
-        if (insertStatement == null) {
-            StringBuilder builder = new StringBuilder("INSERT INTO ").append(tableName);
-            builder.append(" VALUES (");
-            for (int i = 0; i < columnCount; i++) {
-                if (i != 0) {
-                    builder.append(",");
-                }
-                builder.append("?");
+    public SQLiteStatement getInsertStatement(SQLiteDatabase db) {
+        SQLiteStatement result;
+
+        StringBuilder builder = new StringBuilder("INSERT INTO ").append(tableName);
+        builder.append(" VALUES (");
+
+        for (int i = 0; i < columnCount; i++) {
+            if (i != 0) {
+                builder.append(",");
             }
-            builder.append(")");
-            insertStatement = db.compileStatement(builder.toString());
+
+            builder.append("?");
         }
-        return insertStatement;
+
+        builder.append(")");
+        result = db.compileStatement(builder.toString());
+
+        return result;
     }
 
-    public SQLiteStatement getCountStatement() {
-        if (countStatement == null) {
-            countStatement = db.compileStatement("SELECT COUNT(*) FROM " + tableName + " WHERE " +
+    public SQLiteStatement getCountStatement(SQLiteDatabase db) {
+        SQLiteStatement result = db.compileStatement("SELECT COUNT(*) FROM " + tableName + " WHERE " +
                     DbOpenHelper.RUNNING_SESSION_ID_COLUMN.columnName + " != ?");
-        }
-        return countStatement;
+
+        return result;
     }
 
-    public SQLiteStatement getInsertOrReplaceStatement() {
-        if (insertOrReplaceStatement == null) {
-            StringBuilder builder = new StringBuilder("INSERT OR REPLACE INTO ").append(tableName);
-            builder.append(" VALUES (");
-            for (int i = 0; i < columnCount; i++) {
-                if (i != 0) {
-                    builder.append(",");
-                }
-                builder.append("?");
+    public SQLiteStatement getInsertOrReplaceStatement(SQLiteDatabase db) {
+        SQLiteStatement result;
+
+        StringBuilder builder = new StringBuilder("INSERT OR REPLACE INTO ").append(tableName);
+        builder.append(" VALUES (");
+
+        for (int i = 0; i < columnCount; i++) {
+            if (i != 0) {
+                builder.append(",");
             }
-            builder.append(")");
-            insertOrReplaceStatement = db.compileStatement(builder.toString());
+
+            builder.append("?");
         }
-        return insertOrReplaceStatement;
+
+        builder.append(")");
+        result = db.compileStatement(builder.toString());
+
+        return result;
     }
 
-    public SQLiteStatement getDeleteStatement() {
-        if (deleteStatement == null) {
-            deleteStatement = db.compileStatement("DELETE FROM " + tableName + " WHERE " + primaryKeyColumnName + " = ?");
-        }
-        return deleteStatement;
+    public SQLiteStatement getDeleteStatement(SQLiteDatabase db) {
+        SQLiteStatement result = db.compileStatement("DELETE FROM " + tableName + " WHERE " + primaryKeyColumnName + " = ?");
+
+        return result;
     }
 
-    public SQLiteStatement getOnJobFetchedForRunningStatement() {
-        if (onJobFetchedForRunningStatement == null) {
-            String sql = "UPDATE " + tableName + " SET "
-                    + DbOpenHelper.RUN_COUNT_COLUMN.columnName + " = ? , "
-                    + DbOpenHelper.RUNNING_SESSION_ID_COLUMN.columnName + " = ? "
-                    + " WHERE " + primaryKeyColumnName + " = ? ";
-            onJobFetchedForRunningStatement = db.compileStatement(sql);
-        }
-        return onJobFetchedForRunningStatement;
+    public SQLiteStatement getOnJobFetchedForRunningStatement(SQLiteDatabase db) {
+        SQLiteStatement result;
+
+        String sql = "UPDATE " + tableName + " SET "
+                + DbOpenHelper.RUN_COUNT_COLUMN.columnName + " = ? , "
+                + DbOpenHelper.RUNNING_SESSION_ID_COLUMN.columnName + " = ? "
+                + " WHERE " + primaryKeyColumnName + " = ? ";
+        result = db.compileStatement(sql);
+
+        return result;
     }
 
-    public SQLiteStatement getNextJobDelayedUntilWithNetworkStatement() {
-        if(nextJobDelayedUntilWithNetworkStatement == null) {
-            String sql = "SELECT " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName
-                    + " FROM " + tableName + " WHERE "
-                    + DbOpenHelper.RUNNING_SESSION_ID_COLUMN.columnName + " != " + sessionId
-                    + " ORDER BY " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName + " ASC"
-                    + " LIMIT 1";
-            nextJobDelayedUntilWithNetworkStatement = db.compileStatement(sql);
-        }
-        return nextJobDelayedUntilWithNetworkStatement;
+    public SQLiteStatement getNextJobDelayedUntilWithNetworkStatement(SQLiteDatabase db) {
+        SQLiteStatement result;
+
+        String sql = "SELECT " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName
+                + " FROM " + tableName + " WHERE "
+                + DbOpenHelper.RUNNING_SESSION_ID_COLUMN.columnName + " != " + sessionId
+                + " ORDER BY " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName + " ASC"
+                + " LIMIT 1";
+        result = db.compileStatement(sql);
+
+        return result;
     }
 
-    public SQLiteStatement getNextJobDelayedUntilWithoutNetworkStatement() {
-        if(nextJobDelayedUntilWithoutNetworkStatement == null) {
-            String sql = "SELECT " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName
-                    + " FROM " + tableName + " WHERE "
-                    + DbOpenHelper.RUNNING_SESSION_ID_COLUMN.columnName + " != " + sessionId
-                    + " AND " + DbOpenHelper.REQUIRES_NETWORK_COLUMN.columnName + " != 1"
-                    + " ORDER BY " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName + " ASC"
-                    + " LIMIT 1";
-            nextJobDelayedUntilWithoutNetworkStatement = db.compileStatement(sql);
-        }
-        return nextJobDelayedUntilWithoutNetworkStatement;
+    public SQLiteStatement getNextJobDelayedUntilWithoutNetworkStatement(SQLiteDatabase db) {
+        SQLiteStatement result;
+
+        String sql = "SELECT " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName
+                + " FROM " + tableName + " WHERE "
+                + DbOpenHelper.RUNNING_SESSION_ID_COLUMN.columnName + " != " + sessionId
+                + " AND " + DbOpenHelper.REQUIRES_NETWORK_COLUMN.columnName + " != 1"
+                + " ORDER BY " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName + " ASC"
+                + " LIMIT 1";
+        result = db.compileStatement(sql);
+
+        return result;
     }
 
     public String createSelect(String where, Integer limit, Order... orders) {
         StringBuilder builder = new StringBuilder("SELECT * FROM ");
         builder.append(tableName);
+
         if (where != null) {
             builder.append(" WHERE ").append(where);
         }
+
         boolean first = true;
+
         for (Order order : orders) {
             if (first) {
                 builder.append(" ORDER BY ");
-            } else {
+            }
+            else {
                 builder.append(",");
             }
+
             first = false;
             builder.append(order.property.columnName).append(" ").append(order.type);
         }
+
         if (limit != null) {
             builder.append(" LIMIT ").append(limit);
         }
+
         return builder.toString();
     }
 
-    public void truncate() {
+    public void truncate(SQLiteDatabase db) {
         db.execSQL("DELETE FROM " + DbOpenHelper.JOB_HOLDER_TABLE_NAME);
-        vacuum();
+        vacuum(db);
     }
 
-    public void vacuum() {
+    public void vacuum(SQLiteDatabase db) {
         db.execSQL("VACUUM");
     }
 
-    public void resetDelayTimesTo(long newDelayTime) {
-        db.execSQL("UPDATE " + DbOpenHelper.JOB_HOLDER_TABLE_NAME + " SET " + DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName + "=?"
-            , new Object[]{newDelayTime});
+    public void resetDelayTimesTo(SQLiteDatabase db, long newDelayTime) {
+        String query = String.format("UPDATE %s SET %s =?", DbOpenHelper.JOB_HOLDER_TABLE_NAME, DbOpenHelper.DELAY_UNTIL_NS_COLUMN.columnName);
+        Object[] params = new Object[] { newDelayTime };
+
+        db.execSQL(query, params);
     }
+
+    //endregion
+
+    //region Inner classes
 
     public static class Property {
         /*package*/ final String columnName;
@@ -198,6 +230,7 @@ public class SqlHelper {
             ASC,
             DESC
         }
-
     }
+
+    //endregion
 }
