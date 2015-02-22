@@ -17,13 +17,17 @@ import co.alfabits.android.jobqueue.persistentQueue.sqlite.SqliteJobQueue;
  * {@link co.alfabits.android.jobqueue.JobManager} configuration object
  */
 public class Configuration {
+    //region Constants
     public static final String DEFAULT_ID = "default_job_manager";
     public static final int DEFAULT_THREAD_KEEP_ALIVE_SECONDS = 15;
     public static final int DEFAULT_LOAD_FACTOR_PER_CONSUMER = 3;
     public static final int MAX_CONSUMER_COUNT = 5;
     public static final int MIN_CONSUMER_COUNT = 0;
+    //endregion
 
+    //region Fields
     private String id = DEFAULT_ID;
+    private boolean startPaused = false;
     private int maxConsumerCount = MAX_CONSUMER_COUNT;
     private int minConsumerCount = MIN_CONSUMER_COUNT;
     private int consumerKeepAlive = DEFAULT_THREAD_KEEP_ALIVE_SECONDS;
@@ -32,13 +36,21 @@ public class Configuration {
     private DependencyInjector dependencyInjector;
     private NetworkUtil networkUtil;
     private CustomLogger customLogger;
+    //endregion
 
+    //region Constructors
     private Configuration(){
         //use builder instead
     }
+    //endregion
 
+    //region Properties
     public String getId() {
         return id;
+    }
+
+    public Boolean getStartPaused() {
+        return startPaused;
     }
 
     public QueueFactory getQueueFactory() {
@@ -72,13 +84,28 @@ public class Configuration {
     public int getLoadFactor() {
         return loadFactor;
     }
+    //endregion
 
     public static final class Builder {
+        //region Fields
         private Configuration configuration;
         private Context appContext;
+        //endregion
+
         public Builder(Context context) {
             this.configuration = new Configuration();
             appContext = context.getApplicationContext();
+        }
+
+        /**
+         * JobManager start all pending jobs on it's instance creation by default
+         * You can override such behavior and instantiate JobManager without immediate jobs processing start
+         * @return
+         */
+        public Builder startPaused() {
+            configuration.startPaused = true;
+
+            return this;
         }
 
         /**
@@ -89,6 +116,7 @@ public class Configuration {
          */
         public Builder id(String id) {
             configuration.id = id;
+
             return this;
         }
 
@@ -110,11 +138,13 @@ public class Configuration {
          * @return Configuration builder instance
          */
         public Builder queueFactory(QueueFactory queueFactory) {
-            if(configuration.queueFactory != null) {
+            if (configuration.queueFactory != null) {
                 throw new RuntimeException("already set a queue factory. This might happen if you've provided a custom " +
                         "job serializer");
             }
+
             configuration.queueFactory = queueFactory;
+
             return this;
         }
 
@@ -126,6 +156,7 @@ public class Configuration {
          */
         public Builder jobSerializer(SqliteJobQueue.JobSerializer jobSerializer) {
             configuration.queueFactory = new JobManager.DefaultQueueFactory(jobSerializer);
+
             return this;
         }
 
@@ -136,6 +167,7 @@ public class Configuration {
          */
         public Builder networkUtil(NetworkUtil networkUtil) {
             configuration.networkUtil = networkUtil;
+
             return this;
         }
 
@@ -148,6 +180,7 @@ public class Configuration {
          */
         public Builder injector(DependencyInjector injector) {
             configuration.dependencyInjector = injector;
+
             return this;
         }
 
@@ -157,6 +190,7 @@ public class Configuration {
          */
         public Builder maxConsumerCount(int count) {
             configuration.maxConsumerCount = count;
+
             return this;
         }
 
@@ -166,6 +200,7 @@ public class Configuration {
          */
         public Builder minConsumerCount(int count) {
             configuration.minConsumerCount = count;
+
             return this;
         }
 
@@ -176,6 +211,7 @@ public class Configuration {
          */
         public Builder customLogger(CustomLogger logger) {
             configuration.customLogger = logger;
+
             return this;
         }
 
@@ -188,16 +224,19 @@ public class Configuration {
          */
         public Builder loadFactor(int loadFactor) {
             configuration.loadFactor = loadFactor;
+
             return this;
         }
 
         public Configuration build() {
-            if(configuration.queueFactory == null) {
+            if (configuration.queueFactory == null) {
                 configuration.queueFactory = new JobManager.DefaultQueueFactory();
             }
-            if(configuration.networkUtil == null) {
+
+            if (configuration.networkUtil == null) {
                 configuration.networkUtil = new NetworkUtilImpl(appContext);
             }
+
             return configuration;
         }
     }
