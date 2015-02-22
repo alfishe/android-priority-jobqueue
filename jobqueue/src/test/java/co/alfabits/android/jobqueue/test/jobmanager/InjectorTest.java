@@ -66,7 +66,27 @@ public class InjectorTest extends JobManagerTestBase {
             }
 
             @Override
+            public boolean isInfoEnabled() {
+                return false;
+            }
+
+            @Override
+            public boolean isWarnEnabled() {
+                return false;
+            }
+
+            @Override
             public void d(String s, Object... objects) {
+
+            }
+
+            @Override
+            public void i(String text, Object... args) {
+
+            }
+
+            @Override
+            public void w(String text, Object... args) {
 
             }
 
