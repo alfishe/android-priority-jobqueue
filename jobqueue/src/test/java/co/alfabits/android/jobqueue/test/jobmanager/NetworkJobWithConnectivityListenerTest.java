@@ -8,9 +8,11 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.*;
+import org.robolectric.annotation.Config;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
+@Config(emulateSdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class NetworkJobWithConnectivityListenerTest extends JobManagerTestBase {
     @Test

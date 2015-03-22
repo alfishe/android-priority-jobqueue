@@ -3,6 +3,7 @@ package co.alfabits.android.jobqueue.test.jobqueue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import co.alfabits.android.jobqueue.Params;
 import co.alfabits.android.jobqueue.test.TestBase;
@@ -12,6 +13,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+@Config(emulateSdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class JobParamsTest extends TestBase {
     @Test

@@ -11,7 +11,9 @@ import org.hamcrest.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.*;
+import org.robolectric.annotation.Config;
 
+@Config(emulateSdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class DelayTest extends JobManagerTestBase {
     @Test

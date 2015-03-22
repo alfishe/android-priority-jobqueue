@@ -10,6 +10,7 @@ import org.hamcrest.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.*;
+import org.robolectric.annotation.Config;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -20,6 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Config(emulateSdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class MultiThreadTest extends JobManagerTestBase {
     private static AtomicInteger multiThreadedJobCounter;

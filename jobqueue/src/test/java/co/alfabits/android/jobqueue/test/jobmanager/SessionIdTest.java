@@ -1,6 +1,5 @@
 package co.alfabits.android.jobqueue.test.jobmanager;
 
-
 import co.alfabits.android.jobqueue.Job;
 import co.alfabits.android.jobqueue.JobHolder;
 import co.alfabits.android.jobqueue.JobManager;
@@ -13,7 +12,9 @@ import org.hamcrest.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.*;
+import org.robolectric.annotation.Config;
 
+@Config(emulateSdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class SessionIdTest extends JobManagerTestBase {
     @Test

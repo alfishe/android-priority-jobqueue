@@ -3,6 +3,7 @@ package co.alfabits.android.jobqueue.test.jobmanager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -14,6 +15,7 @@ import co.alfabits.android.jobqueue.test.jobs.DummyJob;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+@Config(emulateSdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class SlowOnAddedTest extends JobManagerTestBase {
     @Test

@@ -6,13 +6,11 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0-rc1'
-        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
+        classpath 'com.android.tools.build:gradle:1.1.3'
     }
 }
 
 apply plugin: 'com.android.library'
-//apply plugin: 'robolectric'
 
 repositories {
     jcenter()
@@ -57,7 +55,6 @@ android {
                 srcDir 'src/main/res'
             }
         }
-        androidTest.setRoot('src/test')
     }
 }
 
@@ -67,10 +64,13 @@ dependencies {
     androidTestCompile 'org.easytesting:fest-reflect:1.4.1'
     androidTestCompile 'org.easytesting:fest-util:1.2.5'
     androidTestCompile 'org.hamcrest:hamcrest-core:1.3'
+    androidTestCompile 'org.apache.maven:maven-ant-tasks:2.1.3'
     androidTestCompile('org.robolectric:robolectric:2.4') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
+
+    testCompile 'org.apache.maven:maven-ant-tasks:2.1.3'
     testCompile 'org.easytesting:fest-reflect:1.4.1'
     testCompile 'org.easytesting:fest-util:1.2.5'
     testCompile 'org.hamcrest:hamcrest-core:1.3'
@@ -80,15 +80,6 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
-
-
-//robolectric {
-//    // configure the set of classes for JUnit tests
-//    include '**/*Test.class'
-//
-//    // configure max heap size of the test JVM
-//    maxHeapSize = "2048m"
-//}
 
 import com.android.builder.core.DefaultManifestParser
 
