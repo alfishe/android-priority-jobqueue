@@ -8,6 +8,7 @@ import co.alfabits.android.jobqueue.JobManager;
 import co.alfabits.android.jobqueue.JobQueue;
 import co.alfabits.android.jobqueue.Params;
 import co.alfabits.android.jobqueue.test.jobs.DummyJob;
+
 import org.fest.reflect.core.*;
 import org.hamcrest.*;
 import org.junit.Test;
@@ -18,7 +19,7 @@ import org.robolectric.annotation.Config;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class AddInBackgroundTest extends JobManagerTestBase {
     @Test

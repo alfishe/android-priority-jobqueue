@@ -21,14 +21,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class MultiThreadTest extends JobManagerTestBase {
     private static AtomicInteger multiThreadedJobCounter;
     @Test
     public void testMultiThreaded() throws Exception {
         multiThreadedJobCounter = new AtomicInteger(0);
-        final JobManager jobManager = createJobManager(new Configuration.Builder(Robolectric.application)
+        final JobManager jobManager = createJobManager(new Configuration.Builder(RuntimeEnvironment.application)
             .loadFactor(3).maxConsumerCount(10));
         int limit = 200;
         ExecutorService executor = new ThreadPoolExecutor(20, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(limit));

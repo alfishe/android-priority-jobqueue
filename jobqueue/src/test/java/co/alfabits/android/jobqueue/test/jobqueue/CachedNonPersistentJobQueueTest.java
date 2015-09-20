@@ -9,7 +9,7 @@ import co.alfabits.android.jobqueue.cachedQueue.CachedJobQueue;
 import co.alfabits.android.jobqueue.nonPersistentQueue.NonPersistentPriorityQueue;
 import co.alfabits.android.jobqueue.test.util.JobQueueFactory;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class CachedNonPersistentJobQueueTest extends JobQueueTestBase {
     public CachedNonPersistentJobQueueTest() {

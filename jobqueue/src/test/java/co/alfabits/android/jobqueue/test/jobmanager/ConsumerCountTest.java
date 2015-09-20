@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class ConsumerCountTest extends JobManagerTestBase {
     @Test
     public void testMaxConsumerCount() throws Exception {
         int maxConsumerCount = 2;
-        JobManager jobManager = createJobManager(new Configuration.Builder(Robolectric.application)
+        JobManager jobManager = createJobManager(new Configuration.Builder(RuntimeEnvironment.application)
                 .maxConsumerCount(maxConsumerCount)
                 .loadFactor(maxConsumerCount));
         Object runLock = new Object();

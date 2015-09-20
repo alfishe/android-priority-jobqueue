@@ -16,7 +16,7 @@ import org.robolectric.annotation.Config;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class GroupingTest extends JobManagerTestBase {
     @Test
@@ -45,7 +45,7 @@ public class GroupingTest extends JobManagerTestBase {
     @Test
     public void testGroupingRaceCondition() throws Exception {
         DummyNetworkUtilWithConnectivityEventSupport dummyNetworkUtil = new DummyNetworkUtilWithConnectivityEventSupport();
-        JobManager jobManager = createJobManager(new Configuration.Builder(Robolectric.application)
+        JobManager jobManager = createJobManager(new Configuration.Builder(RuntimeEnvironment.application)
                 .minConsumerCount(5).maxConsumerCount(10)
                 .networkUtil(dummyNetworkUtil));
         dummyNetworkUtil.setHasNetwork(false, true);

@@ -20,7 +20,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class LoadFactorTest extends JobManagerTestBase {
     @Test
@@ -29,7 +29,7 @@ public class LoadFactorTest extends JobManagerTestBase {
         int maxConsumerCount = 5;
         int minConsumerCount = 2;
         int loadFactor = 5;
-        co.alfabits.android.jobqueue.JobManager jobManager = createJobManager(new Configuration.Builder(Robolectric.application)
+        co.alfabits.android.jobqueue.JobManager jobManager = createJobManager(new Configuration.Builder(RuntimeEnvironment.application)
                 .maxConsumerCount(maxConsumerCount)
                 .minConsumerCount(minConsumerCount)
                 .customLogger(new CustomLogger() {

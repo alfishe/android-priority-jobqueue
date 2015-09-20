@@ -16,13 +16,13 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class NetworkNextJobTest extends JobManagerTestBase {
     @Test
     public void testNetworkNextJob() throws Exception {
         DummyNetworkUtil dummyNetworkUtil = new DummyNetworkUtil();
-        JobManager jobManager = createJobManager(new Configuration.Builder(Robolectric.application).networkUtil(dummyNetworkUtil));
+        JobManager jobManager = createJobManager(new Configuration.Builder(RuntimeEnvironment.application).networkUtil(dummyNetworkUtil));
         jobManager.stop();
         DummyJob dummyJob = new DummyJob(new Params(0).requireNetwork());
         long dummyJobId = jobManager.addJob(dummyJob);

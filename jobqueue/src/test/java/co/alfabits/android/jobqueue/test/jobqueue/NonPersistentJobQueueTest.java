@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.*;
 import org.robolectric.annotation.Config;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class NonPersistentJobQueueTest extends JobQueueTestBase {
     public NonPersistentJobQueueTest() {

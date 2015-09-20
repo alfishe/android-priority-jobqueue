@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class JobStatusTest extends JobManagerTestBase {
     @Test
     public void testJobStatus() throws InterruptedException {
         DummyNetworkUtilWithConnectivityEventSupport networkUtil = new DummyNetworkUtilWithConnectivityEventSupport();
         networkUtil.setHasNetwork(false, true);
-        JobManager jobManager = createJobManager(new Configuration.Builder(Robolectric.application).networkUtil(networkUtil));
+        JobManager jobManager = createJobManager(new Configuration.Builder(RuntimeEnvironment.application).networkUtil(networkUtil));
         jobManager.stop();
         List<Integer> networkRequiringJobIndices = new ArrayList<Integer>();
         Job[] jobs = new Job[] {

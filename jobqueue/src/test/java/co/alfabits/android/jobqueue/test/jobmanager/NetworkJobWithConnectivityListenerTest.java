@@ -12,13 +12,13 @@ import org.robolectric.annotation.Config;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class NetworkJobWithConnectivityListenerTest extends JobManagerTestBase {
     @Test
     public void testNetworkJobWithConnectivityListener() throws Exception {
         DummyNetworkUtilWithConnectivityEventSupport dummyNetworkUtil = new DummyNetworkUtilWithConnectivityEventSupport();
-        JobManager jobManager = createJobManager(new Configuration.Builder(Robolectric.application).networkUtil(dummyNetworkUtil));
+        JobManager jobManager = createJobManager(new Configuration.Builder(RuntimeEnvironment.application).networkUtil(dummyNetworkUtil));
         dummyNetworkUtil.setHasNetwork(false, true);
         DummyJob dummyJob = new DummyJob(new Params(0).requireNetwork());
         long dummyJobId = jobManager.addJob(dummyJob);

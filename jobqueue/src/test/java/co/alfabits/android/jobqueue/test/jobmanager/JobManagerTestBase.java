@@ -6,6 +6,7 @@ import org.fest.reflect.core.Reflection;
 import org.fest.reflect.method.Invoker;
 import org.hamcrest.MatcherAssert;
 import org.robolectric.Robolectric;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.UUID;
@@ -25,14 +26,14 @@ import co.alfabits.android.jobqueue.test.jobs.DummyJob;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 public class JobManagerTestBase extends TestBase {
     protected JobManager createJobManager() {
-        return new JobManager(Robolectric.application, UUID.randomUUID().toString());
+        return new JobManager(RuntimeEnvironment.application, UUID.randomUUID().toString());
     }
 
     protected JobManager createJobManager(Configuration.Builder configurationBuilder) {
-        return new JobManager(Robolectric.application, configurationBuilder.id(UUID.randomUUID().toString()).build());
+        return new JobManager(RuntimeEnvironment.application, configurationBuilder.id(UUID.randomUUID().toString()).build());
     }
 
 

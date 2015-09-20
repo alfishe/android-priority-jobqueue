@@ -12,20 +12,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class SqliteJobQueueTest extends JobQueueTestBase {
     public SqliteJobQueueTest() {
         super(new JobQueueFactory() {
             @Override
             public JobQueue createNew(long sessionId, String id) {
-                return new SqliteJobQueue(Robolectric.application, sessionId, id, new SqliteJobQueue.JavaSerializer());
+                return new SqliteJobQueue(RuntimeEnvironment.application, sessionId, id, new SqliteJobQueue.JavaSerializer());
             }
         });
     }
@@ -47,7 +48,7 @@ public class SqliteJobQueueTest extends JobQueueTestBase {
                 return super.deserialize(bytes);
             }
         };
-        SqliteJobQueue jobQueue = new SqliteJobQueue(Robolectric.application, System.nanoTime(), "__" + System.nanoTime(),
+        SqliteJobQueue jobQueue = new SqliteJobQueue(RuntimeEnvironment.application, System.nanoTime(), "__" + System.nanoTime(),
                 jobSerializer);
         jobQueue.insert(createNewJobHolder(new Params(0)));
         calledForSerialize.await(1, TimeUnit.SECONDS);

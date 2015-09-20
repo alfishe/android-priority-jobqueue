@@ -11,13 +11,13 @@ import org.junit.runner.RunWith;
 import org.robolectric.*;
 import org.robolectric.annotation.Config;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class NetworkJobTest extends JobManagerTestBase {
     @Test
     public void testNetworkJob() throws Exception {
         JobManagerTestBase.DummyNetworkUtil dummyNetworkUtil = new JobManagerTestBase.DummyNetworkUtil();
-        JobManager jobManager = createJobManager(new Configuration.Builder(Robolectric.application).networkUtil(dummyNetworkUtil));
+        JobManager jobManager = createJobManager(new Configuration.Builder(RuntimeEnvironment.application).networkUtil(dummyNetworkUtil));
         jobManager.stop();
 
         DummyJob networkDummyJob = new DummyJob(new Params(5).requireNetwork());

@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Config(emulateSdk = 18, manifest = Config.NONE)
+@Config(sdk = 18, manifest = Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class KeepAliveTest extends JobManagerTestBase {
     @Test
@@ -22,9 +22,9 @@ public class KeepAliveTest extends JobManagerTestBase {
         int keepAlive = 3 + (int)(Math.random() * 5);
         DummyNetworkUtil networkUtilWithoutEventSupport = new DummyNetworkUtil();
         DummyNetworkUtilWithConnectivityEventSupport networkUtilWithEventSupport = new DummyNetworkUtilWithConnectivityEventSupport();
-        JobManager jobManager1 = createJobManager(new Configuration.Builder(Robolectric.application)
+        JobManager jobManager1 = createJobManager(new Configuration.Builder(RuntimeEnvironment.application)
                 .consumerKeepAlive(keepAlive).networkUtil(networkUtilWithoutEventSupport));
-        JobManager jobManager2 = createJobManager(new Configuration.Builder(Robolectric.application)
+        JobManager jobManager2 = createJobManager(new Configuration.Builder(RuntimeEnvironment.application)
                 .consumerKeepAlive(keepAlive)
                 .networkUtil(networkUtilWithEventSupport));
         //give it a little time to create first consumer
